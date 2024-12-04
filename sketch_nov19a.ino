@@ -43,14 +43,14 @@ delay(1000);
 void loop() {
 
 int frontSensor = sensorFront();
-if(frontSensor > 20){
-int leftSensor = sensorLeft();
+if(frontSensor > 30){//constant
+  int leftSensor = sensorLeft();
 int rightSensor = sensorRight();
-  if(leftSensor>rightSensor){//left, right
+if(leftSensor>rightSensor){//left, right
   left();
   }
   else if(rightSensor>leftSensor){
-    right();
+    softright();
   }
   else{
     forward();
@@ -59,26 +59,29 @@ int rightSensor = sensorRight();
  
 }
  else{
-  
-    Stop();
-    backward();
-    int leftSensor = sensorLeft();
-    int rightSensor = sensorRight();
-    if(leftSensor>rightSensor){//left, right
-    left();
-     }
-    else if(rightSensor>leftSensor){
-    right();
-    }
-  else{
-    forward();
-    
-  }
- 
-    
-  }
+  hardright();
+     /*
+     Stop();
+     int leftSensor = sensorLeft();
+     int rightSensor = sensorRight();
+          Serial.print("left:");
+
+     Serial.println(leftSensor);
+     Serial.print("right:");
+     Serial.println(rightSensor);
+     if(leftSensor>rightSensor){//left, right
+        left();
+        delay(1000);
+      }
+      else{
+        right();
+        delay(1000);
+
+        }*/
 }
-	
+}
+
+
 
 int sensorLeft() {
   //pulse output
@@ -117,10 +120,16 @@ int sensorRight(){
   return cm; // Return the values from the sensor
 }
 // This function lets you control spinning direction of motors
-void right() {
+void softright() {
 motor1.setSpeed(0);
-motor2.setSpeed(180); 
+motor2.setSpeed(200); 
 motor1.run(RELEASE);
+motor2.run(FORWARD);
+}
+void hardright() {
+motor1.setSpeed(255);
+motor2.setSpeed(255); 
+motor1.run(BACKWARD);
 motor2.run(FORWARD);
 }
 void Stop() {
@@ -130,14 +139,14 @@ motor1.run(RELEASE);
 motor2.run(RELEASE);
 }
 void left() {
-motor1.setSpeed(180);
+motor1.setSpeed(200);
 motor2.setSpeed(0); 
 motor1.run(FORWARD);
 motor2.run(RELEASE);
 }
 void forward(){
-motor1.setSpeed(180);
-motor2.setSpeed(180); 
+motor1.setSpeed(200);
+motor2.setSpeed(200); 
 motor1.run(FORWARD);
 motor2.run(FORWARD);
 }
